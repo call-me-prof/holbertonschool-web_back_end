@@ -39,20 +39,20 @@ class Server:
                          page_size: int = 10) -> Dict:
         """Return a dictionary with deletion-resilient pagination info."""
         data_dict = self.indexed_dataset()
-        max_index = max(data_dict.keys())
-        assert index is not None and 0 <= index <= max_index
+        assert index is not None and index >= 0 and index <= max(
+            data_dict.keys()
+        )
 
         data = []
-        current_index = index
-
-        while len(data) < page_size and current_index <= max_index:
-            if current_index in data_dict:
-                data.append(data_dict[current_index])
-            current_index += 1
+        i = index
+        while len(data) < page_size and i <= max(data_dict.keys()):
+            if i in data_dict:
+                data.append(data_dict[i])
+            i += 1
 
         return {
             'index': index,
-            'next_index': current_index,
+            'next_index': i,
             'page_size': len(data),
             'data': data,
         }
