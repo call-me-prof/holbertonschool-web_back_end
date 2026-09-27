@@ -6,17 +6,14 @@ const fs = require('fs');
  */
 function countStudents(path) {
   let data;
+
   try {
-    data = fs.readFileSync(path, 'utf-8');
+    data = fs.readFileSync(path, 'utf8');
   } catch (error) {
     throw new Error('Cannot load the database');
   }
 
-  const lines = data
-    .toString()
-    .split('\n')
-    .map((line) => line.trim())
-    .filter((line) => line !== '');
+  const lines = data.toString().split('\n').filter((line) => line.trim() !== '');
   const students = lines.slice(1);
 
   console.log(`Number of students: ${students.length}`);

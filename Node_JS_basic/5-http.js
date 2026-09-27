@@ -1,8 +1,6 @@
 const http = require('http');
 const fs = require('fs');
 
-const port = 1245;
-
 /**
  * Builds the students report from a CSV database.
  * @param {String} path - Path of the database file.
@@ -10,17 +8,13 @@ const port = 1245;
  */
 function countStudents(path) {
   return new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf-8', (error, data) => {
+    fs.readFile(path, 'utf8', (error, data) => {
       if (error) {
         reject(new Error('Cannot load the database'));
         return;
       }
 
-      const lines = data
-        .toString()
-        .split('\n')
-        .map((line) => line.trim())
-        .filter((line) => line !== '');
+      const lines = data.toString().split('\n').filter((line) => line.trim() !== '');
       const students = lines.slice(1);
       const output = [`Number of students: ${students.length}`];
 
@@ -35,7 +29,8 @@ function countStudents(path) {
 
       Object.keys(fields).forEach((field) => {
         const list = fields[field];
-        output.push(`Number of students in ${field}: ${list.length}. List: ${list.join(', ')}`);
+        const total = list.length;
+        output.push(`Number of students in ${field}: ${total}. List: ${list.join(', ')}`);
       });
 
       resolve(output.join('\n'));
@@ -49,17 +44,13 @@ const app = http.createServer((req, res) => {
   if (req.url === '/students') {
     res.write('This is the list of our students\n');
     countStudents(process.argv[2])
-      .then((report) => {
-        res.end(report);
-      })
-      .catch((error) => {
-        res.end(error.message);
-      });
+      .then((report) => res.end(report))
+      .catch((error) => res.end(error.message));
   } else {
     res.end('Hello Holberton School!');
   }
 });
 
-app.listen(port);
+app.listen(1245);
 
 module.exports = app;

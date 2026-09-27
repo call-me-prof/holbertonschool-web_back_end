@@ -19,7 +19,8 @@ export default class StudentsController {
 
         names.forEach((field) => {
           const list = fields[field];
-          lines.push(`Number of students in ${field}: ${list.length}. List: ${list.join(', ')}`);
+          const total = list.length;
+          lines.push(`Number of students in ${field}: ${total}. List: ${list.join(', ')}`);
         });
 
         response.status(200).send(lines.join('\n'));
