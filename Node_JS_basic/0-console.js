@@ -1,7 +1,4 @@
-/**
- * Prints the given message in STDOUT.
- * @param {String} message - Message to display.
- */
+// Print the given string to STDOUT
 function displayMessage(message) {
   console.log(message);
 }

@@ -1,6 +1,7 @@
-// Ask the user for a name through STDIN and display it back.
+// Ask the user for their name through STDIN
 process.stdout.write('Welcome to Holberton School, what is your name?\n');
 
+// Print the name as soon as it is received
 process.stdin.on('readable', () => {
   const chunk = process.stdin.read();
   if (chunk !== null) {
@@ -8,6 +9,7 @@ process.stdin.on('readable', () => {
   }
 });
 
+// Print the closing message when the input ends
 process.stdin.on('end', () => {
   process.stdout.write('This important software is now closing\n');
 });

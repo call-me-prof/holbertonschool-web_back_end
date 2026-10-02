@@ -1,31 +1,22 @@
 import fs from 'fs';
 
-/**
- * Reads the students database asynchronously.
- * @param {String} filePath - Path of the database file.
- * @returns {Promise<Object>} Arrays of first names grouped by field.
- */
-export default function readDatabase(filePath) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(filePath, 'utf8', (error, data) => {
-      if (error) {
-        reject(new Error('Cannot load the database'));
-        return;
-      }
-
-      const lines = data.split('\n').filter((line) => line.trim() !== '');
-      const students = lines.slice(1);
-      const fields = {};
-
-      students.forEach((student) => {
-        const parts = student.split(',');
-        const [firstName] = parts;
-        const field = parts[parts.length - 1].trim();
-        if (!fields[field]) fields[field] = [];
-        fields[field].push(firstName.trim());
-      });
-
-      resolve(fields);
+// Read the database asynchronously and return first names grouped by field
+const readDatabase = (filePath) => new Promise((resolve, reject) => {
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      reject(err);
+      return;
+    }
+    const students = data.split('\n').filter((line) => line.trim() !== '').slice(1);
+    const fields = {};
+    students.forEach((line) => {
+      const parts = line.trim().split(',');
+      const field = parts[parts.length - 1];
+      if (!fields[field]) fields[field] = [];
+      fields[field].push(parts[0]);
     });
+    resolve(fields);
   });
-}
+});
+
+export default readDatabase;

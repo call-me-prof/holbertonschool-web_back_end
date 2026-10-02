@@ -1,13 +1,8 @@
-/**
- * Controller handling the homepage route.
- */
-export default class AppController {
-  /**
-   * Sends the welcome message.
-   * @param {Object} request - Express request.
-   * @param {Object} response - Express response.
-   */
+// Controller for the homepage
+class AppController {
   static getHomepage(request, response) {
     response.status(200).send('Hello Holberton School!');
   }
 }
+
+export default AppController;

@@ -1,5 +1,6 @@
 const express = require('express');
 
+// Small HTTP server built with Express
 const app = express();
 
 app.get('/', (req, res) => {
