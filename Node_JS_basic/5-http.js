@@ -14,17 +14,17 @@ function countStudents(path) {
         return;
       }
 
-      const lines = data.toString().split('\n').filter((line) => line.trim() !== '');
+      const lines = data.split('\n').filter((line) => line.trim() !== '');
       const students = lines.slice(1);
       const output = [`Number of students: ${students.length}`];
 
       const fields = {};
       students.forEach((student) => {
         const parts = student.split(',');
-        const firstName = parts[0].trim();
+        const [firstName] = parts;
         const field = parts[parts.length - 1].trim();
         if (!fields[field]) fields[field] = [];
-        fields[field].push(firstName);
+        fields[field].push(firstName.trim());
       });
 
       Object.keys(fields).forEach((field) => {
@@ -42,10 +42,13 @@ const app = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
 
   if (req.url === '/students') {
-    res.write('This is the list of our students\n');
     countStudents(process.argv[2])
-      .then((report) => res.end(report))
-      .catch((error) => res.end(error.message));
+      .then((report) => {
+        res.end(`This is the list of our students\n${report}`);
+      })
+      .catch((error) => {
+        res.end(`This is the list of our students\n${error.message}`);
+      });
   } else {
     res.end('Hello Holberton School!');
   }
